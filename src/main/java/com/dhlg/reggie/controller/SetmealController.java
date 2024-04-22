@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dhlg.reggie.common.R;
 import com.dhlg.reggie.dto.SetmealDto;
 import com.dhlg.reggie.entity.Category;
+import com.dhlg.reggie.entity.Dish;
 import com.dhlg.reggie.entity.Setmeal;
 import com.dhlg.reggie.entity.SetmealDish;
 import com.dhlg.reggie.service.CategoryService;
+import com.dhlg.reggie.service.DishService;
 import com.dhlg.reggie.service.SetmealDishService;
 import com.dhlg.reggie.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,9 @@ public class SetmealController{
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private DishService dishService;
 
 
     @PostMapping
@@ -111,6 +116,31 @@ public class SetmealController{
 
         return R.success("删除成功");
     }
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Setmeal setmeal){
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(setmeal.getCategoryId() != null,Setmeal::getCategoryId,setmeal.getCategoryId());
+        queryWrapper.eq(setmeal.getStatus() != null,Setmeal::getStatus,setmeal.getStatus());
+        queryWrapper.orderByDesc(Setmeal::getUpdateTime);
+
+        List<Setmeal> list = setmealService.list(queryWrapper);
+
+        return R.success(list);
+    }
+
+    @GetMapping("/dish/{id}")
+    public R<List<SetmealDish>> setmealList(@PathVariable Long id){
+
+        LambdaQueryWrapper<SetmealDish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SetmealDish::getSetmealId,id);
+
+        List<SetmealDish> list = setmealDishService.list(queryWrapper);
+
+
+        return R.success(list);
+    }
+
+
 
 
 
@@ -172,6 +202,8 @@ public class SetmealController{
 
 
     }
+
+
 
 
 

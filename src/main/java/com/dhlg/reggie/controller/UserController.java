@@ -53,6 +53,7 @@ public class UserController {
         Object codeInSession = session.getAttribute(phone);
         //页面提交的验证码与session中进行比对
         if(codeInSession != null && codeInSession.equals(code)){
+
             LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(User::getPhone,phone);
 
@@ -63,6 +64,7 @@ public class UserController {
                 //新用户则自动完成注册
                 user = new User();
                 user.setPhone(phone);
+                user.setStatus(1);
                 userService.save(user);
             }
             session.setAttribute("user",user.getId());

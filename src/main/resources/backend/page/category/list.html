@@ -163,7 +163,7 @@
               'dialogVisible': false,
               'categoryId': '',
               'name': '',
-              sort: ''
+              'sort': ''
             }
           }
         },
@@ -223,7 +223,7 @@
               'cancelButtonText': '取消',
               'type': 'warning'
             }).then(() => {
-              deleteCategory(id).then(res => {
+              deleCategory(id).then(res => {
                 if (res.code === 1) {
                   this.$message.success('删除成功！')
                   this.handleQuery()
